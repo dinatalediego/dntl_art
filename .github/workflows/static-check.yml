@@ -19,10 +19,21 @@ jobs:
           node --check gameplay.js
           node --check telemetry.js
           node --check retention.js
+          node --check supabase-config.js
+          node --check ranking-games.js
       - name: Check required assets
         run: |
           test -s index.html
           test -s styles.css
           test -s gameplay.css
           test -s retention.css
+          test -s ranking-games.css
+          test -s supabase-config.js
+          test -s ranking-games.js
           test -s vercel.json
+      - name: Check ranking integration
+        run: |
+          grep -q 'retention.js' index.html
+          grep -q 'ranking-games.js' index.html
+          grep -q 'ranking-games.css' index.html
+          grep -q 'supabase-config.js' index.html
