@@ -20,7 +20,6 @@ function enrichTelemetryRow(row){
   persist();
 }
 
-// Production already links gameplay.css from the pinned CDN shell. Remove only a duplicated relative copy.
 const gameplayStyleLinks=[...document.querySelectorAll('link[rel="stylesheet"]')].filter(x=>String(x.href).includes('gameplay.css'));
 if(gameplayStyleLinks.length>1)document.querySelectorAll('link[href="gameplay.css"]').forEach(x=>x.remove());
 
@@ -84,3 +83,11 @@ async function downloadTelemetryWorkbook(){
 }
 
 installTelemetryExport();
+
+// Load the P0–P4 retention layer from the same origin/CDN revision as this script.
+(function loadRetentionLayer(){
+  if(window.__dntlRetentionLoading)return;window.__dntlRetentionLoading=true;
+  const src=document.currentScript?.src||'';const base=src.includes('/')?src.slice(0,src.lastIndexOf('/')+1):'';
+  if(!document.querySelector('link[data-dntl-retention]')){const l=document.createElement('link');l.rel='stylesheet';l.dataset.dntlRetention='1';l.href=base+'retention.css';document.head.appendChild(l)}
+  const s=document.createElement('script');s.src=base+'retention.js';s.defer=false;s.onload=()=>{window.__dntlRetentionReady=true};s.onerror=()=>{console.warn('DNTL retention layer could not load')};document.body.appendChild(s);
+})();
