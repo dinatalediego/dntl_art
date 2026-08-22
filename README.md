@@ -6,39 +6,66 @@ An aesthetic, multilingual cinematic identity game.
 
 ## Product idea
 
-Otra Vida is not meant to behave like a movie database. The short-session promise is:
+Otra Vida is not a movie database. Its core loop is:
 
-> **Spin another life → make three instinctive film decisions → unlock a cinematic shadow of yourself.**
+> **Spin another life → make instinctive film decisions → discover something about your cinematic identity → come back because that identity keeps evolving.**
 
-The original roulette, atmospheric film cards, multilingual curation, local session history and Excel export remain intact. A modular gameplay layer now adds faster loops without replacing the original oracle.
+The original roulette, atmospheric DNTL artwork, multilingual curation, local session history and Excel export remain intact. New layers extend the game without replacing the original oracle.
 
-## Ways to play
+## Current product layers
 
 ### 1 MINUTE
-Designed for a 30–60 second visit. After each spin the player can answer quickly:
-
-- Seen it
-- Watchlist+
-- Maybe
-- Pass
-
-Three decisions unlock a **Cinematic Passport** with a dominant alternative life, an inferred gaze, a relationship to the canon and a next-film suggestion.
+A 30–60 second run using Seen / Watchlist+ / Maybe / Pass. Three decisions unlock the session Cinematic Passport.
 
 ### CINEPHILE
-Keeps the deeper questionnaire and biases discovery toward a higher **Oracle Depth** inside the current catalogue: older, less US-centric, longer or more off-center recommendations.
+Biases discovery toward a higher **Oracle Depth** — older, geographically broader or more off-center recommendations.
 
 ### TONIGHT
-Lets the player set a runtime window before the oracle recommends a film.
+Lets the player set a runtime window before the oracle recommends.
 
-## Experience
+### P0 — Real film media + actions
+When a film is revealed, the browser tries to resolve a real film image from Wikipedia and the exact IMDb identifier through Wikidata. Results are cached locally. If media resolution fails, the original DNTL generative poster remains as the fallback.
 
-1. **“If in another life you happened to be…”** — spin a roulette of alternative lives.
-2. The selected life curates a film from that point of view.
-3. Every film changes the page atmosphere and receives an original poster-like generative composition made with CSS — no commercial poster assets or image API keys are required.
-4. Use a fast decision or the detailed flow: seen status, rating/watch intent and optional attention hook.
-5. Use **Wildcard** to jump outside the selected life.
-6. Complete three choices to unlock the Cinematic Passport.
-7. Continue another run, share the profile, or export the session.
+Film actions now include:
+
+- Trailer search
+- IMDb
+- Seen
+- Watchlist+
+- Pass
+- image-source attribution when available
+
+No movie API key is embedded in the public frontend.
+
+### P1 — Living Cinematic Passport
+A second, persistent Passport survives **New Session** and lives in a separate `localStorage` key. It remembers:
+
+- films encountered;
+- lives opened;
+- seen films;
+- watchlist;
+- passes;
+- duel preferences;
+- daily visits.
+
+This creates a reason for the page to feel different on a return visit without requiring login or a backend.
+
+### P2 — Daily Other Life
+One deterministic life + film changes each local calendar day. Opening it adds a daily mark to the persistent Passport and enters the existing oracle flow.
+
+### P3 — Duel
+Five fast pairwise film choices. The two films come from different alternative lives and prioritize novelty/depth when possible. The result reveals a temporary **duel bias** and lets the player open the winning film.
+
+### P4 — Blind Spot
+The browser derives a recommendation outside the player's current local pattern. The heuristic looks at:
+
+- under-explored alternative lives;
+- recent-vs-older film exposure;
+- US-heavy vs broader geography;
+- titles already seen or saved;
+- Oracle Depth.
+
+The goal is not only “you may like this” but **“you may not have reached this by yourself.”**
 
 ## Languages
 
@@ -46,13 +73,7 @@ Lets the player set a runtime window before the oracle recommends a film.
 - English
 - German
 
-The UI, alternative-life labels and curatorial notes switch live and the language is remembered locally.
-
-## Cinephile layer
-
-The roulette includes broad life archetypes plus **Filmmaker** and **Writer**, and every recommendation exposes director, country, runtime and craft tags such as direction, editing, cinematography, sound, design, writing, structure and performance.
-
-The goal is not to test whether an experienced viewer “knows the answer”; it is to provoke a different way of seeing.
+The core UI, gameplay layer, Daily, Duel, Blind Spot and Living Passport respond to the active language.
 
 ## Privacy / demo architecture
 
@@ -60,21 +81,23 @@ The goal is not to test whether an experienced viewer “knows the answer”; it
 - No backend
 - No database
 - No third-party behavioral analytics
-- Local `localStorage` persistence only
-- User-triggered Excel export
+- local `localStorage` persistence
+- user-triggered Excel export
 
-A local telemetry layer records product signals inside the session only: mode, run, decision time, depth, quick reaction, completion and elapsed session time. Nothing is sent to a server by the app.
+Local telemetry records product signals such as mode, run, decision time, depth, quick reaction, completion and elapsed session time. Retention events also remain local.
+
+## Media note
+
+The no-key prototype uses Wikipedia/Wikidata to resolve film media and external IDs at runtime. Image rights can vary by source. Before any commercial release, replace this bridge with a rights-cleared commercial data/image provider and keep the current generative artwork as fallback/brand treatment.
 
 ## Excel export
 
-The workbook now includes:
+The workbook currently includes:
 
 - `Passport`
 - `Session`
 - `Product Metrics`
 - `Summary`
-
-This makes a demo session both a player artifact and a small product-research dataset.
 
 ## Run locally
 
@@ -86,14 +109,14 @@ Then open `http://localhost:8080`.
 
 ## Deploy
 
-The repository is a static site and includes `vercel.json`. Production currently runs at:
+The repository is a static site and includes `vercel.json`. Production runs at:
 
 https://dntl-art.vercel.app
 
 ## Verification
 
-`.github/workflows/verify-static.yml` checks JavaScript syntax and ensures the core roulette/oracle/export elements remain present after changes.
+`.github/workflows/static-check.yml` checks JavaScript syntax for `app.js`, `gameplay.js`, `telemetry.js` and `retention.js`, plus the required static assets.
 
 ## Product strategy
 
-See [`PRODUCT.md`](./PRODUCT.md) for player types, the north-star hierarchy, design constraints and the next experiments.
+See [`PRODUCT.md`](./PRODUCT.md) for the product thesis, player types and north-star hierarchy.
