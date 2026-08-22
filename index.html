@@ -3,8 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#11100f" />
-  <meta name="description" content="Ruleta cinematográfica de vidas alternativas." />
+  <meta name="theme-color" content="#0c0b0a" />
+  <meta name="description" content="Otra Vida — a cinematic identity roulette by DNTL Art." />
+  <meta property="og:title" content="Otra Vida — Film Oracle" />
+  <meta property="og:description" content="Spin another life. Let it choose a film." />
   <title>Otra Vida — Film Oracle</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,52 +14,75 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <div id="cinemaBackdrop" class="cinema-backdrop" aria-hidden="true"></div>
   <div class="grain" aria-hidden="true"></div>
   <main class="shell">
     <header class="topbar">
       <a class="brand" href="#" aria-label="DNTL Art">DNTL / ART</a>
-      <div class="session-pill"><span class="pulse"></span><span id="sessionCount">0 hallazgos</span></div>
+      <div class="topbar-actions">
+        <div class="lang-switch" aria-label="Language">
+          <button type="button" data-lang="es" class="active">ES</button>
+          <button type="button" data-lang="en">EN</button>
+          <button type="button" data-lang="de">DE</button>
+        </div>
+        <div class="session-pill"><span class="pulse"></span><span id="sessionCount">0 hallazgos</span></div>
+      </div>
     </header>
 
     <section class="hero">
-      <p class="eyebrow">A CINEMATIC RANDOM WALK</p>
-      <h1>Si en otra vida<br />te tocaba ser <em id="lifeWord">otra persona</em>…</h1>
-      <p class="lede">Gira la ruleta. Entra a otra versión de ti. Déjala elegir una película que quizá tu vida actual todavía no conocía.</p>
+      <p class="eyebrow" data-i18n="heroEyebrow">A CINEMATIC RANDOM WALK</p>
+      <h1><span data-i18n="heroLine1">Si en otra vida</span><br /><span data-i18n="heroLine2">te tocaba ser</span> <em id="lifeWord">otra persona</em>…</h1>
+      <p class="lede" data-i18n="heroLede">Gira la ruleta. Entra a otra versión de ti. Déjala elegir una película que quizá tu vida actual todavía no conocía.</p>
+      <div class="cinephile-note">
+        <span>35mm</span>
+        <p data-i18n="cinephileNote">No buscamos “tu género favorito”. Buscamos la mirada que podrías haber tenido en otra vida.</p>
+      </div>
     </section>
 
     <section class="game-grid">
       <article class="wheel-card glass">
         <div class="wheel-stage">
           <div class="pointer">◆</div>
-          <div id="wheel" class="wheel" aria-label="Ruleta de vidas alternativas"></div>
-          <button id="spinBtn" class="spin-center" type="button">GIRAR</button>
+          <div id="wheel" class="wheel" aria-label="Alternative lives roulette"></div>
+          <button id="spinBtn" class="spin-center" type="button" data-i18n="spin">GIRAR</button>
         </div>
         <div class="wheel-footer">
-          <span>01 — VIDA</span>
-          <span id="lifeResult">esperando al azar</span>
+          <span data-i18n="stepLife">01 — VIDA</span>
+          <span id="lifeResult" data-i18n="waiting">esperando al azar</span>
         </div>
       </article>
 
       <article class="oracle-card glass" id="oracleCard">
         <div class="oracle-empty" id="emptyState">
           <span class="oracle-mark">✦</span>
-          <p>Primero descubre quién eras<br />en esa otra vida.</p>
+          <p data-i18n="emptyOracle">Primero descubre quién eras<br />en esa otra vida.</p>
         </div>
 
         <div class="oracle-content hidden" id="oracleContent">
-          <div class="oracle-kicker"><span id="lifeEmoji">◌</span><span id="lifeLabel"></span></div>
-          <h2 id="movieTitle"></h2>
-          <p class="movie-year" id="movieMeta"></p>
-          <p class="movie-reason" id="movieReason"></p>
+          <div class="film-layout">
+            <div id="posterArt" class="poster-art" aria-hidden="true">
+              <div class="poster-frame"></div>
+              <span class="poster-kicker">DNTL / FILM ORACLE</span>
+              <span id="posterTitle" class="poster-title"></span>
+              <span id="posterYear" class="poster-year"></span>
+            </div>
 
-          <button class="secondary-btn" id="rerollMovieBtn" type="button">otra película de esta vida ↻</button>
+            <div class="film-copy">
+              <div class="oracle-kicker"><span id="lifeEmoji">◌</span><span id="lifeLabel"></span></div>
+              <h2 id="movieTitle"></h2>
+              <p class="movie-year" id="movieMeta"></p>
+              <p class="movie-reason" id="movieReason"></p>
+              <div class="craft-strip" id="craftStrip"></div>
+              <button class="secondary-btn" id="rerollMovieBtn" type="button" data-i18n="reroll">otra película de esta vida ↻</button>
+            </div>
+          </div>
 
           <div class="question-stack" id="questionStack">
             <div class="question">
-              <p>¿Ya la viste?</p>
+              <p data-i18n="seenQuestion">¿Ya la viste?</p>
               <div class="segmented">
-                <button type="button" data-seen="yes">Sí</button>
-                <button type="button" data-seen="no">No</button>
+                <button type="button" data-seen="yes" data-i18n="yes">Sí</button>
+                <button type="button" data-seen="no" data-i18n="no">No</button>
               </div>
             </div>
 
@@ -67,10 +92,15 @@
                 <strong id="scoreValue">7</strong>
               </div>
               <input id="scoreRange" type="range" min="1" max="10" value="7" step="1" />
-              <div class="scale-ends"><span>1 — nada</span><span>10 — esta semana</span></div>
+              <div class="scale-ends"><span id="scaleLow">1 — nada</span><span id="scaleHigh">10 — esta semana</span></div>
             </div>
 
-            <button id="saveBtn" class="primary-btn hidden" type="button">guardar este hallazgo</button>
+            <div class="question hidden" id="hookQuestion">
+              <p data-i18n="hookQuestion">¿Qué te atrae más de esta película?</p>
+              <div class="hook-grid" id="hookGrid"></div>
+            </div>
+
+            <button id="saveBtn" class="primary-btn hidden" type="button" data-i18n="save">guardar este hallazgo</button>
           </div>
         </div>
       </article>
@@ -79,19 +109,28 @@
     <section class="session-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">YOUR TRACE</p>
-          <h3>La sesión deja pistas.</h3>
+          <p class="eyebrow" data-i18n="traceEyebrow">YOUR TRACE</p>
+          <h3 data-i18n="traceTitle">La sesión deja pistas.</h3>
+          <p class="section-copy" data-i18n="traceCopy">Cada giro empieza a dibujar tu mapa: qué vidas te llaman, qué películas ya habitan contigo y cuáles podrían entrar después.</p>
         </div>
         <div class="actions">
-          <button id="newSessionBtn" class="text-btn" type="button">nueva sesión</button>
-          <button id="downloadBtn" class="download-btn" type="button" disabled>↓ descargar .xlsx</button>
+          <button id="newSessionBtn" class="text-btn" type="button" data-i18n="newSession">nueva sesión</button>
+          <button id="downloadBtn" class="download-btn" type="button" disabled data-i18n="download">↓ descargar .xlsx</button>
         </div>
       </div>
       <div id="history" class="history-empty">Todavía no guardaste ninguna película.</div>
     </section>
 
+    <section class="manifesto glass">
+      <p class="eyebrow">FOR PEOPLE WHO WATCH FILMS / AND PEOPLE WHO MAKE THEM</p>
+      <div class="manifesto-grid">
+        <h3 data-i18n="manifestoTitle">Una ruleta también puede ser una forma de curaduría.</h3>
+        <p data-i18n="manifestoCopy">Si llegas como espectador, juega por intuición. Si llegas como cineasta, juega contra tu propio canon: fíjate en dirección, montaje, diseño, sonido y en la película que jamás habrías elegido por género.</p>
+      </div>
+    </section>
+
     <footer>
-      <span>SESSION ONLY · LOCAL STORAGE</span>
+      <span data-i18n="footerPrivacy">SESSION ONLY · LOCAL STORAGE · NO LOGIN</span>
       <span>DNTL ART / 2026</span>
     </footer>
   </main>
