@@ -2,80 +2,116 @@
 
 ## Product thesis
 
-**Otra Vida is not a movie database. It is a one-minute identity game that uses cinema as the reward.**
+**Otra Vida is not a movie database. It is a short identity game that uses cinema as the reward and return behavior as the proof of value.**
 
 The core promise is:
 
-> Spin another life → make three instinctive film decisions → receive a cinematic shadow of yourself.
+> Spin another life → make instinctive film decisions → receive a cinematic interpretation → return because your map is still incomplete.
 
 The product should be playable by someone who knows almost nothing about cinema and still remain interesting to a filmmaker or cinephile with a deep canon.
 
-## Player types we design for
+## Player types
 
 ### 1. The passer-by
-- Has 30–60 seconds.
-- Wants immediate novelty and almost no instructions.
-- Success: completes 3 choices and reaches the Cinematic Passport.
+Has 30–60 seconds. Success: completes a first run and reaches a Passport.
 
-### 2. The curious film viewer
-- Recognizes some titles but wants discovery.
-- Likes “why this film?” more than exhaustive metadata.
-- Success: adds at least one film to an implicit watchlist.
+### 2. The curious viewer
+Wants discovery more than exhaustive metadata. Success: saves a film or opens an external rabbit hole.
 
 ### 3. The cinephile
-- Has seen many obvious recommendations.
-- Wants surprise, craft, history, geography and formal language.
-- Success: uses Cinephile / Wildcard and accepts at least one off-center recommendation.
+Has seen many obvious recommendations. Success: accepts an off-center film, plays Duel or opens a Blind Spot.
 
 ### 4. The filmmaker / film student
-- Reads films through direction, editing, sound, writing, design and cinematography.
-- Wants the recommendation to provoke a way of seeing, not prove the size of their canon.
-- Success: engages with craft signals and plays another run.
+Reads through direction, editing, sound, writing, design and cinematography. Success: the game provokes another way of seeing rather than testing canon size.
 
-### 5. The social player
-- Wants a small artifact to share, not a spreadsheet.
-- Success: shares the Cinematic Passport and invites another person to play.
+### 5. The returning player
+Wants the page to remember enough to be different tomorrow. Success: opens Daily Other Life and grows the Living Passport.
 
-## Current game loop
+## Core session loop
 
 1. Choose a mode.
 2. Spin an alternative life.
-3. Receive a film and a visual atmosphere.
-4. Make a fast or detailed decision.
-5. Repeat until 3 decisions are recorded.
-6. Unlock the Cinematic Passport.
-7. Continue for another run, share, or export the session.
+3. Receive a film, real media when resolvable, DNTL visual treatment and curatorial reason.
+4. React quickly or use the detailed flow.
+5. Reach three decisions.
+6. Unlock the session Cinematic Passport.
+7. Continue, share, use Duel, open a Blind Spot or return another day.
 
-## Modes
+## Completed return-loop roadmap
+
+### P0 — visual recognition + useful film actions
+Implemented:
+- runtime real-media resolution through Wikipedia;
+- IMDb identifier resolution through Wikidata when available;
+- Trailer / IMDb / Seen / Watchlist+ / Pass actions;
+- image source link;
+- local media cache;
+- original DNTL artwork remains the fallback.
+
+**Product hypothesis:** recognition should shorten the time between reveal and meaningful reaction.
+
+### P1 — Living Cinematic Passport
+Implemented as persistent browser-local state separate from the current session.
+
+Tracks:
+- encountered films;
+- seen / watchlist / maybe / pass;
+- alternative-life exposure;
+- duel wins;
+- daily openings;
+- historical local preference signals.
+
+**Product hypothesis:** the return reward should be accumulated identity, not arbitrary XP.
+
+### P2 — Daily Other Life
+Implemented as one deterministic daily life + film per local date.
+
+**Product hypothesis:** a small changing ritual gives the player a reason to revisit without an aggressive streak mechanic.
+
+### P3 — Duel
+Implemented as five binary choices between films from different alternative lives, with novelty/depth bias and a temporary winning-life result.
+
+**Product hypothesis:** pairwise choices create high-quality preference signal with lower cognitive cost than ratings.
+
+### P4 — Blind Spot
+Implemented as a local heuristic that tries to move outside the player’s current map using under-explored lives, decade, geography, prior seen/watchlist state and Oracle Depth.
+
+**Product hypothesis:** the strongest long-term promise is not “we know what you like” but “we can show you what your current habits are hiding.”
+
+## Current game modes
 
 ### 1 MINUTE
-Three fast decisions using:
-- Seen it
-- Watchlist+
-- Maybe
-- Pass
-
-If the player has seen the film, a compact 5 / 8 / 10 memory rating appears.
+Seen it / Watchlist+ / Maybe / Pass. Three decisions unlock the session Passport.
 
 ### CINEPHILE
-Keeps the deeper questionnaire and biases the oracle toward films with a higher **Oracle Depth** — older, geographically less US-centric, longer or more formally off-center titles in the current catalogue.
+Biases toward higher Oracle Depth.
 
 ### TONIGHT
-Keeps the deeper questionnaire but lets the player choose a runtime window before the oracle recommends.
+Adds runtime constraint.
 
-## Reward: Cinematic Passport
+### WILDCARD
+Breaks the current life and intentionally changes direction.
 
-After 3 decisions, the game returns:
-- dominant alternative life;
-- inferred cinematic gaze;
-- relationship to the canon;
-- next film to consider.
+### DUEL
+Five binary film choices with a winner-life reveal.
 
-This creates closure inside one minute and a reason to play a second run.
+### DAILY OTHER LIFE
+One changing door per day.
+
+### BLIND SPOT
+One recommendation deliberately chosen against the current local pattern.
+
+## Two Passports, two jobs
+
+### Session Cinematic Passport
+Immediate reward after three choices. Optimizes one-minute completion and second-run intent.
+
+### Living Cinematic Passport
+Persists across local sessions. Optimizes return visits, personal history and accumulated discovery.
+
+Keeping them separate avoids making the first visit feel empty while still rewarding return behavior.
 
 ## Product signals captured locally
-
-No server analytics are required for the demo. Signals remain in the browser until export.
 
 Per recommendation:
 - session ID;
@@ -87,64 +123,78 @@ Per recommendation:
 - seen vs unseen;
 - rating or watch intent;
 - quick reaction;
-- attention hook in detailed mode;
+- attention hook;
 - Oracle Depth;
 - runtime filter;
 - decision time;
 - elapsed session time;
 - run index and completion.
 
-The Excel export includes a **Product Metrics** sheet so a single demo session can already be reviewed as product evidence.
+Return-loop events additionally include:
+- daily open;
+- persistent film action;
+- duel start / choice;
+- blind-spot open;
+- curated open source.
+
+These remain browser-local in the current demo.
 
 ## North-star hierarchy
 
-For the current demo, optimize in this order:
+Optimize in this order:
 
-1. **First spin rate** — does the promise make people touch the wheel?
-2. **3-choice completion rate** — do they reach the Passport?
-3. **Median decision time** — is the game instinctive rather than laborious?
-4. **Watchlist / acceptance rate** — are recommendations creating desire?
-5. **Second-run rate** — does the Passport generate another loop?
-6. **Wildcard / Cinephile usage** — do experienced viewers seek deeper discovery?
-7. **Share rate** — does the identity output travel socially?
+1. **First meaningful reveal** — does a visitor reach a film quickly?
+2. **3-choice completion** — do they reach the session Passport?
+3. **Meaningful film action** — Seen / Watchlist / external rabbit hole, not merely page time.
+4. **Second experience rate** — second run, Duel or Blind Spot in the same visit.
+5. **D1 return / Daily open** — does accumulated identity create a return?
+6. **Living Passport growth** — are more lives and useful watchlist items accumulating?
+7. **Surprise quality** — does the player feel the oracle found something non-obvious?
 
-## What we deliberately do not add yet
+## Key qualitative question
 
-- Account creation before playing.
-- A backend merely to store demo events.
+At the end of meaningful recommendations, the strongest future explicit signal is:
+
+- too obvious
+- good call
+- **how did you know?**
+
+The third answer is the desired magic moment.
+
+## What we still deliberately avoid
+
+- Mandatory accounts.
+- Coins or generic XP.
+- Leaderboards.
 - Infinite onboarding questions.
-- Genre checklists before the first spin.
-- Heavy achievement systems, coins or artificial XP.
-- Commercial poster scraping.
+- Genre checklists before first play.
+- Social comments/reviews.
+- A backend before real repeated usage justifies it.
 
-Those would increase friction before we know whether the one-minute loop is fun.
+## Next evidence-driven experiments
 
-## Next experiments
+### A. Surprise feedback
+Add the three-option “too obvious / good call / how did you know?” signal and optimize Blind Spot against it.
 
-### A. Mood as a real game input
-For Tonight mode, test four moods such as cerebral / visceral / tender / strange, but only after every film has reliable mood tags.
+### B. Mood for Tonight
+Only after reliable mood tags exist.
 
-### B. Against My Canon
-If a player marks several titles as already seen, progressively shift toward different countries, decades, directors and formal traditions.
+### C. Secret Door / Rare Reel
+Occasional curation-rule shift rather than a cosmetic achievement.
 
-### C. Duel mode
-Show two films from two alternative lives and ask: **Which life wins tonight?** This creates faster preference data and strong replay value.
+### D. Shareable visual Living Passport
+Generate a public-facing identity card without exposing raw local history.
 
-### D. Secret door / rare reel
-Occasionally reveal a visibly special recommendation after several choices. It should change the curation rule, not merely add a badge.
-
-### E. Shareable visual Passport
-Generate an image card containing only the public-facing profile, never the raw session dataset.
-
-### F. Session-to-session learning
-Only after real repeated use: optional consent to save profiles across visits and improve recommendations.
+### E. Optional cross-device account
+Only after D1/D7 behavior shows that users care about retaining their Passport beyond one browser.
 
 ## Product principle
 
-Every new feature should answer one of three questions:
+Every new feature should answer at least one question:
 
 1. Does it make the first 10 seconds clearer or more seductive?
-2. Does it make the third decision more rewarding?
-3. Does it give the player a reason to start another run?
+2. Does it increase the quality of the player signal without adding friction?
+3. Does it make the reward after a decision more personal?
+4. Does it give a concrete reason to return tomorrow?
 
-If it does none of those, it probably should not be in the one-minute game.
+If it does none of those, it probably does not belong in the core game.
