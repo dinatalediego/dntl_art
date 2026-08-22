@@ -1,0 +1,38 @@
+name: verify-static
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check JavaScript syntax
+        run: |
+          node --check app.js
+          node --check gameplay.js
+          node --check telemetry.js
+
+      - name: Check production shell references
+        run: |
+          grep -q 'app.js' index.html
+          grep -q 'gameplay.js' index.html
+          grep -q 'telemetry.js' index.html
+          grep -q 'exceljs' index.html
+
+      - name: Ensure core experience remains present
+        run: |
+          grep -q 'id="wheel"' index.html
+          grep -q 'id="movieTitle"' index.html
+          grep -q 'id="downloadBtn"' index.html
+          grep -q "const LIVES" app.js
