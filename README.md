@@ -1,44 +1,55 @@
 # DNTL Art — Otra Vida / Film Oracle
 
-Demo web experimental para descubrir películas a partir de una ruleta de vidas alternativas.
+An aesthetic, multilingual cinematic identity game.
 
-## Idea
+## Experience
 
-1. **“Si en otra vida te tocaba ser…”** — gira una ruleta de perfiles (arquitecto, músico, estratega, científico, etc.).
-2. La vida seleccionada activa una segunda recomendación aleatoria de películas asociadas a ese patrón.
-3. El usuario responde si ya vio la película y registra interés o valoración.
-4. La sesión queda guardada localmente en el navegador (`localStorage`).
-5. Puede descargarse un **Excel `.xlsx`** con el historial y un resumen de la sesión.
+1. **“If in another life you happened to be…”** — spin a roulette of alternative lives.
+2. The selected life curates a film from that point of view.
+3. Every film changes the page atmosphere and receives an original poster-like generative composition made with CSS — no copyrighted poster assets or image API keys are required.
+4. Answer whether you have seen the film, rate it or your intention to watch it, and optionally mark what attracts you most: story, image, sound, rhythm/editing, performance or idea.
+5. The session stays only in browser `localStorage`.
+6. Export the session as a styled `.xlsx` with raw observations, a summary and session metadata.
 
-## Principios del demo
+## Languages
 
-- Sin login.
-- Sin base de datos.
-- Sin backend.
-- Fácil de desplegar como sitio estático en Vercel, GitHub Pages o cualquier hosting estático.
-- Los datos permanecen solamente en el navegador del usuario hasta iniciar una nueva sesión o limpiar el almacenamiento.
+- Spanish
+- English
+- German
 
-## Ejecutar localmente
+The UI, alternative-life labels and curatorial notes switch live and the language is remembered locally.
 
-Puedes abrir `index.html` directamente o servir la carpeta con cualquier servidor estático, por ejemplo:
+## Cinephile layer
+
+The roulette includes broad life archetypes plus **Filmmaker** and **Writer**, and every recommendation exposes director, country, runtime and craft tags (direction, editing, cinematography, sound, design, writing, structure, performance). The game is designed to work both for casual viewers and people who already have a personal film canon.
+
+## Privacy / demo architecture
+
+- No login
+- No backend
+- No database
+- No analytics by default
+- Session-only local persistence
+- User-triggered Excel export
+
+This keeps the public demo frictionless while producing a clean behavioral dataset when the user chooses to download it.
+
+## Run locally
 
 ```bash
 python -m http.server 8080
 ```
 
-Luego abre `http://localhost:8080`.
+Then open `http://localhost:8080`.
 
-## Exportación Excel
+## Deploy
 
-La página usa el bundle de navegador de **ExcelJS** desde CDN para generar un archivo `.xlsx` con:
+The repository is a static site and includes `vercel.json`. Import the GitHub repository into Vercel or deploy the project root directly.
 
-- hoja `Session` con cada respuesta;
-- hoja `Summary` con métricas por vida alternativa;
-- encabezados estilizados, anchos de columna y panel congelado.
+## Future extensions
 
-## Próximos pasos posibles
-
-- Añadir posters mediante TMDB cuando exista una API key.
-- Convertirlo en PWA instalable.
-- Incorporar un recomendador que aprenda de sesiones previas.
-- Guardar sesiones opcionalmente en Supabase/Vercel Postgres.
+- Optional TMDB integration for licensed/attributed poster metadata.
+- PWA installability.
+- Session-to-session recommender with explicit consent.
+- “Against my canon” mode for cinephiles.
+- Shareable result cards without sharing the session dataset.
