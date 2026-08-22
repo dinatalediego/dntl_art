@@ -20,8 +20,9 @@ function enrichTelemetryRow(row){
   persist();
 }
 
-// gameplay.css is already linked from the production shell; avoid a redundant relative 404.
-document.querySelectorAll('link[href="gameplay.css"]').forEach(x=>x.remove());
+// Production already links gameplay.css from the pinned CDN shell. Remove only a duplicated relative copy.
+const gameplayStyleLinks=[...document.querySelectorAll('link[rel="stylesheet"]')].filter(x=>String(x.href).includes('gameplay.css'));
+if(gameplayStyleLinks.length>1)document.querySelectorAll('link[href="gameplay.css"]').forEach(x=>x.remove());
 
 const telemetryShowMovie=showMovie;
 showMovie=function(reset=true){telemetryShowMovie(reset);markMovieShown()};
@@ -74,8 +75,7 @@ async function downloadTelemetryWorkbook(){
   ];
   session.forEach(r=>ws.addRow({...r,seen:r.seen?'yes':'no',run_completed:r.run_completed?'yes':'no'}));styleTable(ws,session.length,23);ws.autoFilter={from:'A1',to:`W${session.length+1}`};ws.getColumn('score').numFmt='0"/10"';
 
-  const metrics=wb.addWorksheet('Product Metrics');metrics.columns=[{header:'metric',key:'metric',width:28},{header:'value',key:'value',width:22}];metricRows().forEach(([metric,value])=>metrics.addRow({metric,value}));styleTable(metrics,metrics.rowCount-1,2);['E2','E3'];
-  metrics.getColumn('value').numFmt='0.00';
+  const metrics=wb.addWorksheet('Product Metrics');metrics.columns=[{header:'metric',key:'metric',width:28},{header:'value',key:'value',width:22}];metricRows().forEach(([metric,value])=>metrics.addRow({metric,value}));styleTable(metrics,metrics.rowCount-1,2);metrics.getColumn('value').numFmt='0.00';
 
   const summary=wb.addWorksheet('Summary');summary.columns=[{header:'alternative_life',key:'life',width:22},{header:'recommendations',key:'count',width:18},{header:'already_seen',key:'seen',width:15},{header:'avg_score',key:'avg',width:14},{header:'accepted_7_plus',key:'accepted',width:18},{header:'avg_depth',key:'depth',width:14}];
   LIVES.map(l=>{const rows=session.filter(r=>r.life_id===l.id);if(!rows.length)return null;return{life:lifeName(l),count:rows.length,seen:rows.filter(r=>r.seen).length,avg:rows.reduce((a,r)=>a+Number(r.score||0),0)/rows.length,accepted:rows.filter(r=>Number(r.score)>=7).length,depth:rows.reduce((a,r)=>a+Number(r.oracle_depth||1),0)/rows.length}}).filter(Boolean).forEach(r=>summary.addRow(r));styleTable(summary,summary.rowCount-1,6);summary.getColumn('avg').numFmt='0.0';summary.getColumn('depth').numFmt='0.0';
